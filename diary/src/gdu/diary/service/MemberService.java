@@ -17,10 +17,10 @@ public class MemberService {
 	// update -> modify
 	// delete -> remove
 	
+	// 회원탈퇴
 	// 삭제 성공: true, 삭제 실패(rollback): false 
 	public boolean removeMemberByKey(Member member) {
 		this.dbUtil = new DBUtil();
-		Member returnMember = null;
 		this.memberDao = new MemberDao();
 		this.todoDao = new TodoDao();
 		Connection conn = null; // Dao에서 빼고 여기서 선언
@@ -29,8 +29,8 @@ public class MemberService {
 		try {
 			conn = dbUtil.getConnection();
 			todoRowCnt = this.todoDao.deleteTodoByMember(conn, member.getMemberNo());
-			System.out.println(todoRowCnt+"<-- MemberService.removeMemberByKey의 todoRowCnt");
 			memberRowCnt = this.memberDao.deleteMemberByKey(conn, member);
+			System.out.println(todoRowCnt+"<-- MemberService.removeMemberByKey의 todoRowCnt");
 			System.out.println(memberRowCnt+"<-- MemberService.removeMemberByKey의 memberRowCnt");
 			conn.commit();
 		} catch (SQLException e) {
@@ -40,11 +40,14 @@ public class MemberService {
 				e1.printStackTrace();
 			} 
 			e.printStackTrace();
-			// 캐치절에서 끝나면 무조건 false가 리턴
+			// catch절에서 끝나면 무조건 false가 리턴
+		} finally {
+			this.dbUtil.close(conn, null, null);
 		}
 		return (todoRowCnt+memberRowCnt) > 0;
 	}
 	
+	// 로그인
 	public Member getMemberByKey(Member member) {
 		this.dbUtil = new DBUtil();
 		Member returnMember = null;
@@ -53,8 +56,10 @@ public class MemberService {
 		try {
 			conn = dbUtil.getConnection();
 			returnMember = this.memberDao.selectMemberByKey(conn, member);
+			System.out.println(conn+"<-- MemberService.getMemberByKey의 conn");
+			System.out.println(returnMember+"<-- MemberService.getMemberByKey의 returnMember");
 			conn.commit();
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
@@ -68,6 +73,7 @@ public class MemberService {
 		return returnMember;
 	}
 	
+	// 회원가입
 	public Member addMember(Member member) {
 		this.dbUtil = new DBUtil();
 		Member returnMember = null;
@@ -76,6 +82,8 @@ public class MemberService {
 		try {
 			conn = dbUtil.getConnection();
 			returnMember = this.memberDao.insertMember(conn, member);
+			System.out.println(conn+"<-- MemberService.addMember의 conn");
+			System.out.println(returnMember+"<-- MemberService.addMember의 returnMember");
 			conn.commit();
 		} catch(SQLException e) {
 			try {

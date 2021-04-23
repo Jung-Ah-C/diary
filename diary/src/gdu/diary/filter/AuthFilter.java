@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter("/auth/*") 
+@WebFilter("/_auth/*") //_ 언더바를 사용해서 검사를 하지 않도록 테스를 위해 편하게 함 
 //  Auth/IndexController -> 요청 1. EncodingFilter 2. AuthFilter 3. IndexController 4. AuthFilter 5. EncodingFilter
 public class AuthFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

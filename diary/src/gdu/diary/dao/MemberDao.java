@@ -20,15 +20,16 @@ public class MemberDao {
 			stmt = conn.prepareStatement(MemberQuery.DELETE_MEMBER_BY_KEY);
 			stmt.setInt(1, member.getMemberNo());
 			stmt.setString(2, member.getMemberPw());
+			System.out.println(stmt+"<-- MemberDao.deleteMemberByKey의 stmt");
 			rowCnt = stmt.executeUpdate();
 		} finally {
-			dbUtil.close(null, stmt, null);
+			this.dbUtil.close(null, stmt, null);
 		}
 		return rowCnt;
 	}
 	
 	// 회원 로그인
-	public Member selectMemberByKey(Connection conn, Member member) throws SQLException { //Connection 무조건 매개변수로 받아야된다
+	public Member selectMemberByKey(Connection conn, Member member) throws SQLException { // Connection 무조건 매개변수로 받아야된다
 		this.dbUtil = new DBUtil();
 		Member returnMember = null;
 		PreparedStatement stmt = null;
@@ -37,6 +38,7 @@ public class MemberDao {
 			stmt = conn.prepareStatement(MemberQuery.SELECT_MEMBER_BY_KEY);
 			stmt.setString(1, member.getMemberId());
 			stmt.setString(2, member.getMemberPw());
+			System.out.println(stmt+"<-- MemberDao.selectMemberByKey의 stmt");
 			rs = stmt.executeQuery();
 			if(rs.next()) {
 				returnMember = new Member();
@@ -44,7 +46,7 @@ public class MemberDao {
 				returnMember.setMemberId(rs.getString("memberId"));
 			}
 		} finally {
-			dbUtil.close(conn, stmt, rs);
+			this.dbUtil.close(null, stmt, rs);
 		}
 		return returnMember;
 	}
@@ -58,11 +60,10 @@ public class MemberDao {
 			stmt = conn.prepareStatement(MemberQuery.INSERT_MEMBER);
 			stmt.setString(1, member.getMemberId());
 			stmt.setString(2, member.getMemberPw());
-			// 디버깅
-			System.out.println("insertMember stmt: "+stmt);
+			System.out.println(stmt+"<-- MemberDao.insertMember의 stmt");
 			stmt.executeUpdate();
 		} finally {
-			dbUtil.close(conn, stmt, null);
+			this.dbUtil.close(null, stmt, null);
 		}
 		return returnMember;
 	}

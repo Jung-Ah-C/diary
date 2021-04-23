@@ -29,7 +29,10 @@ public class LoginController extends HttpServlet {
 		member.setMemberId(memberId);
 		member.setMemberPw(memberPw);
 		System.out.println(member+"<-- LoginController의 member");
+		
 		Member returnMember = this.memberService.getMemberByKey(member);
+		System.out.println(returnMember+"<-- LoginController의 returnMember");
+		
 		if(returnMember == null) {
 			System.out.println("로그인 실패");
 		} else {
