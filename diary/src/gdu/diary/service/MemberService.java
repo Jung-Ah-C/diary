@@ -17,6 +17,68 @@ public class MemberService {
 	// update -> modify
 	// delete -> remove
 	
+	// 회원가입 아이디 중복 검사
+	// 아이디 중복 = true, 아이디 중복 아님 = false
+	public boolean checkMemberIdByKey(Member member) {
+		this.dbUtil = new DBUtil();
+		this.memberDao = new MemberDao();
+		Connection conn = null;
+		boolean checkId = false;
+		try {
+			conn = dbUtil.getConnection();
+			if(this.memberDao.checkMemberIdByKey(conn, member)!=null) { // 아이디가 중복이라면
+				checkId = true;
+			} else {
+				checkId = false;
+			}
+			conn.commit();
+		} catch (SQLException e) {
+			try {
+				conn.rollback(); // 예외 발생했을 때 select 빼고 다 롤백
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			} 
+			e.printStackTrace();
+			// catch절에서 끝나면 무조건 false가 리턴
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return checkId;
+	}
+	
+	// 회원가입
+	public Member addMember(Member member) {
+		this.dbUtil = new DBUtil();
+		Member returnMember = null;
+		this.memberDao = new MemberDao();
+		Connection conn = null; // Dao에서 빼고 여기서 선언
+		try {
+			conn = dbUtil.getConnection();
+			returnMember = this.memberDao.insertMember(conn, member);
+			System.out.println(conn+"<-- MemberService.addMember의 conn");
+			conn.commit();
+		} catch(SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return returnMember;
+	}
+	
 	// 회원탈퇴
 	// 삭제 성공: true, 삭제 실패(rollback): false 
 	public boolean removeMemberByKey(Member member) {
@@ -45,7 +107,6 @@ public class MemberService {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -62,7 +123,6 @@ public class MemberService {
 			conn = dbUtil.getConnection();
 			returnMember = this.memberDao.selectMemberByKey(conn, member);
 			System.out.println(conn+"<-- MemberService.getMemberByKey의 conn");
-			System.out.println(returnMember+"<-- MemberService.getMemberByKey의 returnMember");
 			conn.commit();
 		} catch (SQLException e) {
 			try {
@@ -75,7 +135,6 @@ public class MemberService {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -83,34 +142,4 @@ public class MemberService {
 		return returnMember;
 	}
 	
-	// 회원가입
-	public Member addMember(Member member) {
-		this.dbUtil = new DBUtil();
-		Member returnMember = null;
-		this.memberDao = new MemberDao();
-		Connection conn = null; // Dao에서 빼고 여기서 선언
-		try {
-			conn = dbUtil.getConnection();
-			returnMember = this.memberDao.insertMember(conn, member);
-			System.out.println(conn+"<-- MemberService.addMember의 conn");
-			System.out.println(returnMember+"<-- MemberService.addMember의 returnMember");
-			conn.commit();
-		} catch(SQLException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		return returnMember;
-	}
 }

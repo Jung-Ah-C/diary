@@ -19,7 +19,7 @@
 				<div><button type="submit">로그인</button></div>
 			</div>
 		</form>
-		<a href="${pageContext.request.contextPath}/InsertMemberController">회원가입</a>
+		<a href="${pageContext.request.contextPath}/insertMember"><button type="button">회원가입</button></a>
 	</c:if>
 	<!-- 로그인 후 -->
 	<c:if test="${sessionMember != null}">
