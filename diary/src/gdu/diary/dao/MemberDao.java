@@ -9,11 +9,9 @@ import gdu.diary.util.DBUtil;
 import gdu.diary.vo.Member;
 
 public class MemberDao {
-	private DBUtil dbUtil;
 	
 	// 회원탈퇴
 	public int deleteMemberByKey(Connection conn, Member member) throws SQLException {
-		this.dbUtil = new DBUtil();
 		int rowCnt = 0;
 		PreparedStatement stmt = null;
 		try {
@@ -23,14 +21,13 @@ public class MemberDao {
 			System.out.println(stmt+"<-- MemberDao.deleteMemberByKey의 stmt");
 			rowCnt = stmt.executeUpdate();
 		} finally {
-			this.dbUtil.close(null, stmt, null);
+			stmt.close();
 		}
 		return rowCnt;
 	}
 	
 	// 회원 로그인
 	public Member selectMemberByKey(Connection conn, Member member) throws SQLException { // Connection 무조건 매개변수로 받아야된다
-		this.dbUtil = new DBUtil();
 		Member returnMember = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -46,14 +43,13 @@ public class MemberDao {
 				returnMember.setMemberId(rs.getString("memberId"));
 			}
 		} finally {
-			this.dbUtil.close(null, stmt, rs);
+			stmt.close();
 		}
 		return returnMember;
 	}
 	
 	// 회원가입 
 	public Member insertMember(Connection conn, Member member) throws SQLException {
-		this.dbUtil = new DBUtil();
 		Member returnMember = null;
 		PreparedStatement stmt = null;
 		try {
@@ -63,7 +59,7 @@ public class MemberDao {
 			System.out.println(stmt+"<-- MemberDao.insertMember의 stmt");
 			stmt.executeUpdate();
 		} finally {
-			this.dbUtil.close(null, stmt, null);
+			stmt.close();
 		}
 		return returnMember;
 	}

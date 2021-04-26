@@ -1,9 +1,22 @@
 package gdu.diary.service;
 
-import java.util.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import gdu.diary.dao.TodoDao;
+import gdu.diary.util.DBUtil;
+import gdu.diary.vo.Todo;
 
 public class DiaryService { // diary 구현
-	public Map<String, Object> getDiary(String targetYear, String targetMonth) {
+	
+	private DBUtil dbUtil;
+	private TodoDao todoDao;
+	
+	public Map<String, Object> getDiary(int memberNo, String targetYear, String targetMonth) {
 		// 타겟 년, 월, 일 (날짜)
 		// 타겟의 1일
 		// 타겟의 마지막 일의 숫자 -> endDay
@@ -62,6 +75,33 @@ public class DiaryService { // diary 구현
 		map.put("endDay", endDay);
 		map.put("endBlank", endBlank);
 		
+		
+		// 2. targetYear, targetMonth(0이면 1월, 1이면 2월)에 해당하는 todo목록 가져와서 추가
+		this.dbUtil = new DBUtil();
+		this.todoDao = new TodoDao();
+		
+		List<Todo> todoList = null;
+		Connection conn = null;
+		try {
+			conn = dbUtil.getConnection();
+			todoList = this.todoDao.selectTodoListByDate(conn, memberNo, target.get(Calendar.YEAR), target.get(Calendar.MONTH)+1);
+			conn.commit();
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		map.put("todoList", todoList);
 		return map;
 	}
 }

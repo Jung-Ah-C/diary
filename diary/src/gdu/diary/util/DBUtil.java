@@ -21,31 +21,4 @@ public class DBUtil {
 		// conn을 리턴해야돼서 close하면 안되기 때문에 finally를 사용하지 않는다 
 		return conn;
 	}
-	
-	// 2) 1)의 이유로 메서드 호출 쪽에서 자원을 해제(close)해야하는데 편하게 해제가능하도록 메서드 제공
-	// 2. DB 자원(conn, stmt, rs) 해제
-	public void close(Connection conn, PreparedStatement stmt, ResultSet rs) {
-		// 생성된 역순으로 해제
-		if(rs != null) {
-			try {
-				rs.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if(stmt != null) {
-			try {
-				stmt.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if(conn != null) {
-			try {
-				conn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }

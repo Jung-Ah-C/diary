@@ -11,7 +11,7 @@
 	<div>totalCell : ${totalCell}</div>
 	
 	<h1><a href="${pageContext.request.contextPath}/auth/diary?targetYear=${diaryMap.targetYear}&targetMonth=${diaryMap.targetMonth-1}">이전달</a>
-		${diaryMap.targetYear}년 ${diaryMap.targetMonth}월
+		${diaryMap.targetYear}년 ${diaryMap.targetMonth + 1}월
 		<a href="${pageContext.request.contextPath}/auth/diary?targetYear=${diaryMap.targetYear}&targetMonth=${diaryMap.targetMonth+1}">다음달</a>
 	</h1>
 	
@@ -21,7 +21,19 @@
 				<c:set var="num" value="${i-diaryMap.startBlank}"></c:set>
 				<td>
 					<c:if test="${num > 0 && num <= diaryMap.endDay}">
-						<a href="${pageContext.request.contextPath}/auth/addTodo?targetYear=${diaryMap.targetYear}&targetMonth=${diaryMap.targetMonth + 1}&targetDate=${num}">${num}</a>
+						<a href="${pageContext.request.contextPath}/auth/addTodo?year=${diaryMap.targetYear}&month=${diaryMap.targetMonth + 1}&day=${num}">
+							<div>${num}</div>
+							<div>
+								<c:forEach var="todo" items="${diaryMap.todoList}">
+									<c:if test="${todo.todoDate == num}">
+										<!-- todoOne 상세보기, 수정, 삭제e -->
+										<div style="background-color:${todo.todoFontColor}">
+											<a href="${pageContext.request.contextPath}/auth/todoOne">${todo.todoTitle}...</a>
+										</div>
+									</c:if>
+								</c:forEach>
+							</div>
+						</a>
 					</c:if>
 					<c:if test="${num <= 0 || num > diaryMap.endDay}">
 						&nbsp;

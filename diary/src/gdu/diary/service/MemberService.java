@@ -42,7 +42,12 @@ public class MemberService {
 			e.printStackTrace();
 			// catch절에서 끝나면 무조건 false가 리턴
 		} finally {
-			this.dbUtil.close(conn, null, null);
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return (todoRowCnt+memberRowCnt) > 0;
 	}
@@ -67,7 +72,12 @@ public class MemberService {
 			}
 			e.printStackTrace();
 		} finally {
-			this.dbUtil.close(conn, null, null);
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return returnMember;
@@ -93,7 +103,12 @@ public class MemberService {
 			}
 			e.printStackTrace();
 		} finally {
-			this.dbUtil.close(conn, null, null);
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return returnMember;
