@@ -11,13 +11,14 @@ import gdu.diary.vo.Member;
 public class MemberDao {
 	
 	// 회원가입 시 아이디 중복 확인
-	public String checkMemberIdByKey(Connection conn, Member member) throws SQLException {
+	public String checkMemberIdByKey(Connection conn, String memberId) throws SQLException {
 		String checkMemberId = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
 			stmt = conn.prepareStatement(MemberQuery.CHECK_MEMBER_ID_BY_KEY);
-			stmt.setString(1, member.getMemberId());
+			// view 에서 입력한 memberId를 가져와서 입력
+			stmt.setString(1, memberId);
 			System.out.println(stmt+"<-- MemberDao.checkMemberIdByKey의 stmt");
 			rs = stmt.executeQuery();
 			if(rs.next()) {

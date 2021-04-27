@@ -38,13 +38,14 @@ public class InsertMemberController extends HttpServlet {
 		
 		
 		// Service에서 insert 메서드 호출
-		boolean checkId = this.memberService.checkMemberIdByKey(member);
-		if(checkId == true) {
+		// boolean 결과값을 checkId에 복사
+		boolean checkId = this.memberService.insertMember(member);
+		if(checkId == false) {
 			System.out.println("이미 사용중인 아이디입니다.");
 			response.sendRedirect(request.getContextPath()+"/insertMember");
 			return;
 		} else {
-			System.out.println("회원가입 성공");
+			System.out.println("회원가입 성공!");
 		}
 		
 		// redirect
