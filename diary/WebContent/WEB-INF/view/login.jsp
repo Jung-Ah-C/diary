@@ -21,6 +21,7 @@
 		</form>
 		<a href="${pageContext.request.contextPath}/insertMember"><button type="button">회원가입</button></a>
 	</c:if>
+	
 	<!-- 로그인 후 -->
 	<c:if test="${sessionMember != null}">
 		<div>${sessionMember.memberId} 님 반갑습니다.</div>

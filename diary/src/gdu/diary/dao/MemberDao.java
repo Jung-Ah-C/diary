@@ -9,6 +9,21 @@ import gdu.diary.util.DBUtil;
 import gdu.diary.vo.Member;
 
 public class MemberDao {
+	// 회원정보수정 (비밀번호 수정)
+	public int modifyMemberByKey(Connection conn, Member member) throws SQLException {
+		int rowCnt = 0;
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(MemberQuery.MODIFY_MEMBER_BY_KEY);
+			stmt.setString(1, member.getMemberPw());
+			stmt.setInt(2, member.getMemberNo());
+			System.out.println(stmt+"<-- MemberDao.modifyMemberByKey의 stmt");
+			rowCnt = stmt.executeUpdate();
+		} finally {
+			stmt.close();
+		}
+		return rowCnt;
+	}
 	
 	// 회원가입 시 아이디 중복 확인
 	public String checkMemberIdByKey(Connection conn, String memberId) throws SQLException {
@@ -46,7 +61,7 @@ public class MemberDao {
 		return returnMember;
 	}
 	
-	// 회원탈퇴
+	// 회원 탈퇴
 	public int deleteMemberByKey(Connection conn, Member member) throws SQLException {
 		int rowCnt = 0;
 		PreparedStatement stmt = null;

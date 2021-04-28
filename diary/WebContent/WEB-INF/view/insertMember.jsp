@@ -12,7 +12,7 @@
 	<form method="post" action="${pageContext.request.contextPath}/insertMember">
 		<div>
 			<div>ID: </div>
-			<div></div><input type="text" name="memberId" required="required"></div>
+			<div><input type="text" name="memberId" required="required"></div>
 			<div>PW: </div>
 			<div><input type="password" name="memberPw" required="required"></div>
 			<div><button type="submit">가입</button></div>

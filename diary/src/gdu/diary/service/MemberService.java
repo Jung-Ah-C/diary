@@ -17,6 +17,8 @@ public class MemberService {
 	// update -> modify
 	// delete -> remove
 	
+	// 회원정보 수정
+	
 	// 회원가입 및 아이디 중복 확인
 	// 아이디가 중복되거나 예외가 발생하면 false를 리턴함
 	public boolean insertMember(Member member) {
