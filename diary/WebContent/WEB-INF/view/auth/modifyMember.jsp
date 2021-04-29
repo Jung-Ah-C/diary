@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1>modifyMember</h1>
-	<form method="post" action="${pageContext.request.contextPath}/modifyMember">
+	<form method="post" action="${pageContext.request.contextPath}/auth/modifyMember">
 		<div>
 			<div>ID: </div>
 			<div><input type="text" name="memberId" value="${sessionMember.memberId}" readonly="readonly"></div>

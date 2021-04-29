@@ -9,7 +9,7 @@ import gdu.diary.util.DBUtil;
 import gdu.diary.vo.Member;
 
 public class MemberDao {
-	// 회원정보수정 (비밀번호 수정)
+	// 회원정보 수정 (비밀번호 수정)
 	public int modifyMemberByKey(Connection conn, Member member) throws SQLException {
 		int rowCnt = 0;
 		PreparedStatement stmt = null;

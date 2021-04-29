@@ -17,7 +17,37 @@ public class MemberService {
 	// update -> modify
 	// delete -> remove
 	
-	// 회원정보 수정
+	// 회원정보 수정 (비밀번호 변경)
+	public boolean modifyMember(Member member) {
+		// 객체 생성 및 초기화
+		this.dbUtil = new DBUtil();
+		this.memberDao = new MemberDao();
+		Connection conn = null; // Dao에서 빼고 여기서 선언
+		try {
+			// DB 연결 및 Dao 메소드 실행
+			conn = dbUtil.getConnection();
+			this.memberDao.modifyMemberByKey(conn, member);
+			System.out.println(conn+"<-- MemberService.modifyMember의 conn");
+			conn.commit();
+		} catch(SQLException e) {
+			try {
+				// 에러가 나면 롤백 시킴
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+			return false;
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return true;
+	}
 	
 	// 회원가입 및 아이디 중복 확인
 	// 아이디가 중복되거나 예외가 발생하면 false를 리턴함
@@ -25,7 +55,6 @@ public class MemberService {
 		// 객체 생성 및 초기화
 		this.dbUtil = new DBUtil();
 		this.memberDao = new MemberDao();
-		Member returnMember = null;
 		Connection conn = null; // Dao에서 빼고 여기서 선언
 		try {
 			conn = dbUtil.getConnection();
